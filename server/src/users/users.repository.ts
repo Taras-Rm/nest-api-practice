@@ -8,7 +8,7 @@ import { v4 } from 'uuid';
 export class UsersRepository {
   private users: User[] = [];
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const newUser: User = {
       id: v4(),
       ...createUserDto,
@@ -19,19 +19,19 @@ export class UsersRepository {
     return newUser;
   }
 
-  findById(id: string): User {
+  async findById(id: string): Promise<User> {
     return this.users.find((u) => u.id === id);
   }
 
-  findByEmail(email: string): User {
+  async findByEmail(email: string): Promise<User> {
     return this.users.find((u) => u.email === email);
   }
 
-  findAll(): User[] {
+  async findAll(): Promise<User[]> {
     return this.users;
   }
 
-  update(id: string, updateUserDto: UpdateUserDto): User {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = this.users.find((u) => u.id === id);
     if (!user) {
       return null;
@@ -46,7 +46,7 @@ export class UsersRepository {
     return user;
   }
 
-  delete(id: string): string {
+  async delete(id: string): Promise<string> {
     const idx = this.users.findIndex((u) => u.id === id);
     if (idx === -1) {
       return '';

@@ -7,8 +7,8 @@ import { UsersRepository } from './users.repository';
 export class UsersService {
   constructor(private readonly userRepository: UsersRepository) {}
 
-  create(createUserDto: CreateUserDto) {
-    const existingUserEmail = this.userRepository.findByEmail(
+  async create(createUserDto: CreateUserDto) {
+    const existingUserEmail = await this.userRepository.findByEmail(
       createUserDto.email,
     );
     if (existingUserEmail) {
@@ -17,19 +17,19 @@ export class UsersService {
       );
     }
 
-    return this.userRepository.create(createUserDto);
+    return await this.userRepository.create(createUserDto);
   }
 
-  findById(id: string) {
-    return this.userRepository.findById(id);
+  async findById(id: string) {
+    return await this.userRepository.findById(id);
   }
 
-  findAll() {
-    return this.userRepository.findAll();
+  async findAll() {
+    return await this.userRepository.findAll();
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    const existingUserEmail = this.userRepository.findByEmail(
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const existingUserEmail = await this.userRepository.findByEmail(
       updateUserDto.email,
     );
     if (existingUserEmail) {
@@ -38,10 +38,10 @@ export class UsersService {
       );
     }
 
-    return this.userRepository.update(id, updateUserDto);
+    return await this.userRepository.update(id, updateUserDto);
   }
 
-  delete(id: string) {
-    return this.userRepository.delete(id);
+  async delete(id: string) {
+    return await this.userRepository.delete(id);
   }
 }
