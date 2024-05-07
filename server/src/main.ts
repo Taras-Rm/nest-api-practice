@@ -1,13 +1,27 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { ValidationPipe } from '@nestjs/common';
+import { HttpStatus, ValidationPipe } from '@nestjs/common';
 import { CustomExceptionFilter } from './filters/CustomException.filter';
+import ApiError from './errors/ApiError';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
+  app.enableCors();
   app.useGlobalFilters(new CustomExceptionFilter());
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      stopAtFirstError: true,
+      exceptionFactory: (errors) => {
+        return new ApiError(
+          HttpStatus.BAD_REQUEST,
+          'failed',
+          Object.values(errors[0].constraints)[0],
+        );
+      },
+    }),
+  );
   app.setGlobalPrefix('api');
 
   const PORT = app.get(ConfigService).get<number>('PORT');

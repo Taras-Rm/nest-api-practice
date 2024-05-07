@@ -32,10 +32,10 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const existingUserEmail = await this.userRepository.findByEmail(
+    const existingUserWithEmail = await this.userRepository.findByEmail(
       updateUserDto.email,
     );
-    if (existingUserEmail) {
+    if (existingUserWithEmail && existingUserWithEmail.id !== id) {
       throw new ApiError(
         HttpStatus.BAD_REQUEST,
         'failed',
