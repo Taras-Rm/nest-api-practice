@@ -12,7 +12,7 @@ This is basic client for users API testing.
 
 1. Clone repository:
 ``` bash
-git clone https://github.com/Taras-Rm/express-api-practice.git
+git clone https://github.com/Taras-Rm/nest-api-practice.git
 ```
 
 2. Move to client folder:
