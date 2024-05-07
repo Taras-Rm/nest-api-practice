@@ -1,7 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
+import ApiError from 'src/errors/ApiError';
 
 @Injectable()
 export class UsersService {
@@ -12,7 +13,9 @@ export class UsersService {
       createUserDto.email,
     );
     if (existingUserEmail) {
-      throw new BadRequestException(
+      throw new ApiError(
+        HttpStatus.BAD_REQUEST,
+        'failed',
         `User with email: ${createUserDto.email} already exists`,
       );
     }
@@ -33,7 +36,9 @@ export class UsersService {
       updateUserDto.email,
     );
     if (existingUserEmail) {
-      throw new BadRequestException(
+      throw new ApiError(
+        HttpStatus.BAD_REQUEST,
+        'failed',
         `User with email: ${updateUserDto.email} already exists`,
       );
     }

@@ -1,9 +1,6 @@
-import {
-  BadRequestException,
-  Injectable,
-  NestMiddleware,
-} from '@nestjs/common';
+import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
+import ApiError from '../errors/ApiError';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
@@ -12,10 +9,14 @@ export class CheckUserIdMiddleware implements NestMiddleware {
 
   async use(req: Request, res: Response, next: NextFunction) {
     const userId = req.params.id;
-
-    const user = this.userService.findById(userId);
-    if (!user) {
-      throw new BadRequestException(`invalid user id: ${userId}`);
+    
+    const user = await this.userService.findById(userId);
+    if (!user) {      
+      throw new ApiError(
+        HttpStatus.BAD_REQUEST,
+        'Bad request',
+        `invalid user id: ${userId}`,
+      );
     }
 
     next();
