@@ -7,8 +7,9 @@ import ApiError from './errors/ApiError';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
-  app.enableCors();
+  // exception filter
   app.useGlobalFilters(new CustomExceptionFilter());
+  // validation pipe
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
