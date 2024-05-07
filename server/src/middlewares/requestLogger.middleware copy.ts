@@ -6,7 +6,6 @@ export class RequestLoggerMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const requestInfo = `Request <<< METHOD: ${req.method}, URL: ${req.url}`;
 
-    // TODO: add real logger
     res.on('finish', () => {
       console.log(`${requestInfo} => Response <<< STATUS: ${res.statusCode}`);
     });
